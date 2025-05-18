@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongovolume:/data/db
+    networks:
+      - tmnetwork
+
+  tm-backend:
+    build: ./backend
+    container_name: tm-backend
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/travelmemory
+      - PORT=3001
+    depends_on:
+      - mongo
+    networks:
+      - tmnetwork
+
+  tm-frontend:
+    build: ./frontend
+    container_name: tm-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:3001
+    depends_on:
+      - tm-backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - tmnetwork
+
+volumes:
+  mongovolume:
+
+networks:
+  tmnetwork:
+    driver: bridge

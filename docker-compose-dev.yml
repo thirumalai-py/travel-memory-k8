@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongovolume:/data/db
+    networks:
+      - tmnetwork
+
+  tm-backend:
+    image: 975050024946.dkr.ecr.ap-south-1.amazonaws.com/thirumalai-b10/travel-local-backend:V1.0
+    container_name: tm-backend
+    restart: always
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/travelmemory
+      - PORT=3001
+    networks:
+      - tmnetwork
+    depends_on:
+      - mongo
+
+  tm-frontend:
+    image: 975050024946.dkr.ecr.ap-south-1.amazonaws.com/thirumalai-b10/travel-local-frontend:V1.0
+    container_name: tm-frontend
+    restart: always
+    environment:
+      - REACT_APP_BACKEND_URL=http://13.126.242.231/api/
+    networks:
+      - tmnetwork
+    depends_on:
+      - tm-backend
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - tm-frontend
+      - tm-backend
+    networks:
+      - tmnetwork
+
+volumes:
+  mongovolume:
+
+networks:
+  tmnetwork:
+    driver: bridge
