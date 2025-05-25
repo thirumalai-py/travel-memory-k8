@@ -1,0 +1,12 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: travelmemory-backend-service
+  namespace: backend
+spec:
+  selector:
+    app: travelmemory-backend
+  ports:
+  - port: 80
+    targetPort: 3001
+  type: LoadBalancer
