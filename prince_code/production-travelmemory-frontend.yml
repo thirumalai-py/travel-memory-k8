@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travelmemory-frontend
+  namespace: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: travelmemory-frontend
+  template:
+    metadata:
+      labels:
+        app: travelmemory-frontend
+    spec:
+      containers:
+      - name: travelmemory-frontend
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: frontend-build
+          mountPath: /usr/share/nginx/html
+      initContainers:
+      - name: build-frontend
+        image: node:14
+        workingDir: /app
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          echo "Cloning TravelMemory repository..."
+          git clone https://github.com/XXRadeonXFX/TravelMemory.git /app
+          
+          echo "Building frontend..."
+          cd /app/frontend
+          npm install
+          
+          # Create .env file with backend URL
+          echo "REACT_APP_API_URL=http://travelmemory-backend-service.backend.svc.cluster.local/api" > .env
+          
+          # Build static files
+          npm run build
+          
+          # Copy to shared volume
+          cp -r build/* /build/
+        volumeMounts:
+        - name: frontend-build
+          mountPath: /build
+      volumes:
+      - name: frontend-build
+        emptyDir: {}

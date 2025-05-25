@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-nginx-conf
+  namespace: frontend
+data:
+  nginx.conf: |
+    server {
+        listen 80;
+        root /usr/share/nginx/html;
+        index index.html;
+        
+        # Force all paths to load either itself (js files) or go through index.html
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+        
+        # Increase proxy buffer size
+        proxy_buffer_size   128k;
+        proxy_buffers   4 256k;
+        proxy_busy_buffers_size   256k;
+        
+        # Disable cache for API requests
+        location /api {
+            expires -1;
+            add_header Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
+        }
+        
+        # Static content - can be cached
+        location /static {
+            expires 1y;
+            add_header Cache-Control "public";
+            access_log off;
+        }
+    }

@@ -1,0 +1,48 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travelmemory-frontend
+  namespace: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: travelmemory-frontend
+  template:
+    metadata:
+      labels:
+        app: travelmemory-frontend
+    spec:
+      containers:
+      - name: travelmemory-frontend
+        image: node:20
+        workingDir: /app
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          echo "Cloning TravelMemory repository..."
+          git clone https://github.com/XXRadeonXFX/TravelMemory.git /tmp/repo
+          
+          echo "Copying frontend code..."
+          cp -r /tmp/repo/frontend/* /app/
+
+          # Add API_URL environment variable to .env file
+          echo "REACT_APP_BACKEND_URL=http://a56e2a8b5436c43f7b66772d97653b9d-1938984911.ap-south-1.elb.amazonaws.com" > .env
+          echo "Using backend URL: http://a56e2a8b5436c43f7b66772d97653b9d-1938984911.ap-south-1.elb.amazonaws.com"
+          
+          echo "Installing dependencies..."
+          npm install
+          
+          
+          
+          echo "Starting frontend application..."
+          npm start
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"

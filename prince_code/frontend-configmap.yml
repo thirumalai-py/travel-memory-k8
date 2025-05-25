@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: frontend
+data:
+  # Replace these with your actual frontend environment settings
+  REACT_APP_API_URL: http://a56e2a8b5436c43f7b66772d97653b9d-1938984911.ap-south-1.elb.amazonaws.com
