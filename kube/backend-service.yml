@@ -10,5 +10,4 @@ spec:
   - protocol: TCP
     port: 3001
     targetPort: 3001
-    nodePort: 32360
-  type: NodePort
+  type: LoadBalancer # for Live deploymet else it is NodePort
