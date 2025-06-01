@@ -38,10 +38,25 @@ kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
 
 
 
+## For local testing to route to local host
+
+kubectl port-forward svc/travelmemory-backend-service 3001:80 -n backend -> this forward the 3001 from localhost of host to the minikube
 
 
 
 
 
 
+
+
+# Service URL 
+
+## Different Namespace Services
+mongodb-service.database.svc.cluster.local -> <service_name>.<namespace>.svs.cluster.local
+
+## Same Namespace Services
+
+if running inside the same namespace itself
+
+mongodb-service.database.svc.cluster.local -> <service_name>
 

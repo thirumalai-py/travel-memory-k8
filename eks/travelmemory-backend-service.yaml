@@ -5,8 +5,12 @@ metadata:
   namespace: backend
 spec:
   selector:
-    app: travelmemory-backend
+    app: travelmemory-backend # label to match the pods created by the deployment
+  # This service will route traffic to the pods created by the deployment
   ports:
   - port: 80
     targetPort: 3001
-  type: LoadBalancer
+    nodePort: 30001
+    protocol: TCP
+  type: NodePort # LoadBalancer 
+  

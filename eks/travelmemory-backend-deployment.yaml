@@ -5,14 +5,17 @@ metadata:
   namespace: backend
 spec:
   replicas: 1
-  selector:
+  selector: # selector to match the pods created by this deployment
     matchLabels:
-      app: travelmemory-backend
-  template:
+      app: travelmemory-backend # label to match the service selector
+  template: # template for the pods created by this deployment
     metadata:
       labels:
-        app: travelmemory-backend
+        app: travelmemory-backend # this label must match the service selector
     spec:
+      #initContainers: # init container runs one time before the main container starts
+      #- name: git-clone
+      # image: alpine/git
       containers:
       - name: travelmemory-backend
         image: node:14
