@@ -33,14 +33,16 @@ kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
 18) Check the Loadbalancer URL and see if the service is running in browser
 
 
-- Get all pods - kubectl get pods -A
-- Get All services - kubectl get svc -A
-
+# Commands
+- Get all pods - `kubectl get pods -A`
+- Get All services - `kubectl get svc -A`
+- Generate Base 64 -  `echo "sample" | base64` -> c2FtcGxlCg==
+- Decode Base 64 -  `echo "c2FtcGxlCg==" | base64 -d` -> sample
 
 
 ## For local testing to route to local host
-
-kubectl port-forward svc/travelmemory-backend-service 3001:80 -n backend -> this forward the 3001 from localhost of host to the minikube
+- this forward the 3001 from localhost of host to the minikube
+`kubectl port-forward svc/travelmemory-backend-service 3001:80 -n backend` 
 
 
 
