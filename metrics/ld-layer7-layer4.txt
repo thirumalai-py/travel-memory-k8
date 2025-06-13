@@ -1,0 +1,11 @@
+| Feature          | Layer 4 LB                  | Layer 7 LB                      |
+| ---------------- | --------------------------- | ------------------------------- |
+| OSI Layer        | 4 (Transport)               | 7 (Application)                 |
+| Protocol         | TCP/UDP                     | HTTP/HTTPS/WebSocket/gRPC       |
+| Smart Routing    | ❌ No                        | ✅ Yes (path, header, cookie)    |
+| SSL Termination  | ❌ No (pass-through)         | ✅ Yes                           |
+| Performance      | 🚀 Very fast                | 🚀 Fast but more processing     |
+| Example AWS      | Network Load Balancer (NLB) | Application Load Balancer (ALB) |
+| Example Azure    | Azure Load Balancer         | Azure Application Gateway       |
+| Example GCP      | Network LB                  | HTTP(S) LB                      |
+| Example Software | HAProxy TCP mode, F5 LTM    | HAProxy HTTP mode, NGINX, Envoy |

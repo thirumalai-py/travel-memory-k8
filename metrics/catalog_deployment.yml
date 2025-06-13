@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-catalog-demo
+  labels:
+    app: product-catalog
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: product-catalog
+  template:
+    metadata:
+      labels:
+        app: product-catalog
+    spec:
+      containers:
+        - name: product-catalog
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"       # Request 0.1 CPU
+              memory: "128Mi"   # Request 128 MiB memory
+            limits:
+              cpu: "200m"       # Limit 0.2 CPU
+              memory: "256Mi"   # Limit 256 MiB memory

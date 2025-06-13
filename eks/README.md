@@ -39,14 +39,9 @@ kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
 - Generate Base 64 -  `echo "sample" | base64` -> c2FtcGxlCg==
 - Decode Base 64 -  `echo "c2FtcGxlCg==" | base64 -d` -> sample
 
-
 ## For local testing to route to local host
 - this forward the 3001 from localhost of host to the minikube
 `kubectl port-forward svc/travelmemory-backend-service 3001:80 -n backend` 
-
-
-
-
 
 
 
